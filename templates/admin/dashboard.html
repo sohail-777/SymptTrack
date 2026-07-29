@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard — SymptTrack</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<div id="toast-stack"></div>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a class="brand" href="/admin/dashboard"><span class="brand-badge"></span>SymptTrack</a>
+    <nav class="admin-nav">
+      <a href="#" data-tab="overview" class="active">📊 Overview</a>
+      <a href="#" data-tab="patients">👥 Patients</a>
+      <a href="#" data-tab="logs">📋 Daily Logs</a>
+      <a href="#" data-tab="tips">💡 Health Tips</a>
+      <a href="#" data-tab="settings">⚙️ Settings</a>
+      <a href="#" data-tab="activity">🕒 Activity Log</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="/" style="color:rgba(255,255,255,0.7); font-size:13px; display:block; margin-bottom:10px;">🌐 View Patient Site</a>
+      <button class="btn btn-outline btn-sm btn-block" id="admin-logout-btn" style="background:transparent; color:white; border-color:rgba(255,255,255,0.3);">Log Out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <h2 style="margin-bottom:2px;">🧑‍💼 Admin Control Room</h2>
+        <p class="text-muted" style="margin:0;">Manage patients, logs, content and settings.</p>
+      </div>
+      <span class="badge badge-grey" id="ov-model-status">⏸️ Checking model status...</span>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section class="admin-view active" id="view-overview">
+      <div class="grid-4 mb-24">
+        <div class="card stat-card">
+          <div class="icon-badge" style="background:var(--mint-100);">👥</div>
+          <div class="value" id="ov-total-patients">–</div>
+          <div class="label">Total Patients</div>
+        </div>
+        <div class="card stat-card">
+          <div class="icon-badge" style="background:#E4F7EE;">✅</div>
+          <div class="value" id="ov-active-patients">–</div>
+          <div class="label">Active Patients</div>
+        </div>
+        <div class="card stat-card">
+          <div class="icon-badge" style="background:#FFF6E0;">📋</div>
+          <div class="value" id="ov-total-logs">–</div>
+          <div class="label">Total Symptom Logs</div>
+        </div>
+        <div class="card stat-card">
+          <div class="icon-badge" style="background:#FDE8EB;">📅</div>
+          <div class="value" id="ov-logs-today">–</div>
+          <div class="label">Logs Today</div>
+        </div>
+        <div class="card stat-card">
+          <div class="icon-badge" style="background:var(--mint-100);">📈</div>
+          <div class="value" id="ov-logs-7d">–</div>
+          <div class="label">Logs (Last 7 Days)</div>
+        </div>
+        <div class="card stat-card">
+          <div class="icon-badge" style="background:#E4F7EE;">🆕</div>
+          <div class="value" id="ov-signups-7d">–</div>
+          <div class="label">New Signups (7d)</div>
+        </div>
+        <div class="card stat-card">
+          <div class="icon-badge" style="background:#FFF6E0;">🌡️</div>
+          <div class="value" id="ov-avg-severity">–</div>
+          <div class="label">Avg. Severity</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title mb-16"><span class="icon">🧠</span><h3>Most Common Suggested Diagnoses</h3></div>
+        <div id="ov-top-conditions">Loading...</div>
+      </div>
+    </section>
+
+    <!-- PATIENTS -->
+    <section class="admin-view" id="view-patients">
+      <div class="admin-topbar">
+        <div class="search-box"><span>🔎</span><input type="text" id="patient-search" placeholder="Search patients by name or email..."></div>
+      </div>
+      <div class="card table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Streak</th><th>Actions</th></tr></thead>
+          <tbody id="patients-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LOGS -->
+    <section class="admin-view" id="view-logs">
+      <div class="admin-topbar">
+        <div class="flex gap-8 items-center">
+          <input type="date" id="logs-date-filter">
+          <button class="btn btn-outline btn-sm" id="logs-clear-filter">Clear</button>
+        </div>
+      </div>
+      <div class="card table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Patient</th><th>Symptoms</th><th>Severity</th><th>AI Summary</th></tr></thead>
+          <tbody id="logs-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- HEALTH TIPS CMS -->
+    <section class="admin-view" id="view-tips">
+      <div class="grid-2">
+        <div>
+          <div id="tips-admin-list"></div>
+        </div>
+        <div class="card" style="height:fit-content;">
+          <div class="section-title mb-16"><span class="icon">➕</span><h3>Add Health Tip</h3></div>
+          <form id="add-tip-form">
+            <div class="field"><label>Icon (emoji)</label><input type="text" id="tip-icon" maxlength="4" placeholder="💡"></div>
+            <div class="field"><label>Title</label><input type="text" id="tip-title" required></div>
+            <div class="field"><label>Content</label><textarea id="tip-content" required></textarea></div>
+            <div class="field"><label>Category</label><input type="text" id="tip-category" placeholder="nutrition, sleep, fitness..."></div>
+            <button type="submit" class="btn btn-primary btn-block">Add Tip</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="admin-view" id="view-settings">
+      <div class="grid-2">
+        <div class="card settings-form">
+          <div class="section-title mb-16"><span class="icon">🏥</span><h3>Site Settings</h3></div>
+          <form id="settings-form">
+            <div class="field"><label>Site Name</label><input type="text" id="setting-site-name"></div>
+            <div class="field"><label>Tagline</label><input type="text" id="setting-tagline"></div>
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+          </form>
+        </div>
+        <div class="card settings-form">
+          <div class="section-title mb-16"><span class="icon">🔐</span><h3>Change Admin Password</h3></div>
+          <form id="change-password-form">
+            <div class="field"><label>New Password</label><input type="password" id="new-admin-password" minlength="6" required></div>
+            <button type="submit" class="btn btn-coral">Update Password</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section class="admin-view" id="view-activity">
+      <div class="card">
+        <div class="section-title mb-16"><span class="icon">🕒</span><h3>Recent Activity</h3></div>
+        <div id="activity-list">Loading...</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Patient detail modal -->
+<div class="modal-backdrop" id="patient-modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" id="patient-modal-close">✕</button>
+    </div>
+    <div id="patient-modal-body">Loading...</div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

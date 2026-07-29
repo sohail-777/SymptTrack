@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — SymptTrack</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+<div id="toast-stack"></div>
+{% if session.get('patient_id') %}{% include "_navbar.html" %}{% else %}
+<nav class="navbar"><div class="navbar-inner">
+  <a class="brand" href="/"><span class="brand-badge"></span>SymptTrack</a>
+  <a href="/" class="btn btn-primary btn-sm">Log In</a>
+</div></nav>
+{% endif %}
+
+<main class="page-wrap">
+  <div class="container">
+
+    <div class="about-hero">
+      <div class="emoji-row">🏥 🩺 🧑‍⚕️ 💊 ❤️‍🩹</div>
+      <h1>About SymptTrack</h1>
+      <p style="max-width:600px; margin:0 auto;">SymptTrack is a friendly pocket health journal that helps you log daily symptoms, get instant AI-assisted diagnosis suggestions, and understand your health trends over time — all in one calm, clinic-inspired space.</p>
+    </div>
+
+    <div class="grid-2 mt-24">
+      <div class="card">
+        <div class="section-title mb-16"><span class="icon">🎯</span><h3>Our Mission</h3></div>
+        <p>Most people only think about their health when something goes wrong. SymptTrack encourages small, daily check-ins so patterns become visible long before they become problems — and gives you a clear record to bring to your doctor.</p>
+      </div>
+      <div class="card">
+        <div class="section-title mb-16"><span class="icon">🧠</span><h3>The Model</h3></div>
+        <p>Diagnosis suggestions are powered by <strong>CORe — Clinical Diagnosis Prediction</strong>, a transformer model trained on clinical notes to predict likely conditions from symptom text. If the model is temporarily unavailable, a transparent rule-based engine steps in automatically so you're never left without a result.</p>
+      </div>
+    </div>
+
+    <h2 class="mt-32 mb-16">🗺️ A Tour of the App</h2>
+    <div class="feature-list">
+      <div class="card flex gap-12">
+        <span class="step-num">1</span>
+        <div><h4>🏠 Home</h4><p>Your daily snapshot — streaks, quick stats, and rotating health tips &amp; habits.</p></div>
+      </div>
+      <div class="card flex gap-12">
+        <span class="step-num">2</span>
+        <div><h4>🩺 Symptoms</h4><p>A visual calendar. Tap any date to log symptoms and receive an instant diagnosis suggestion.</p></div>
+      </div>
+      <div class="card flex gap-12">
+        <span class="step-num">3</span>
+        <div><h4>📋 Records</h4><p>Every entry you've ever logged, plus one-tap monthly PDF report downloads.</p></div>
+      </div>
+      <div class="card flex gap-12">
+        <span class="step-num">4</span>
+        <div><h4>📊 Analytics</h4><p>Charts that reveal whether your health is improving, stable, or declining.</p></div>
+      </div>
+    </div>
+
+    <div class="card mt-32" style="border-left: 4px solid var(--coral);">
+      <div class="section-title mb-8"><span class="icon">⚠️</span><h3>Important Disclaimer</h3></div>
+      <p style="margin:0;">SymptTrack is a self-tracking and decision-support tool. It does <strong>not</strong> provide a medical diagnosis and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider with questions about a medical condition, and seek emergency care for urgent symptoms.</p>
+    </div>
+
+    <h2 class="mt-32 mb-16">🛠️ Built With</h2>
+    <div class="flex gap-8" style="flex-wrap:wrap;">
+      <span class="badge badge-teal">Flask</span>
+      <span class="badge badge-teal">MySQL</span>
+      <span class="badge badge-teal">HuggingFace Transformers</span>
+      <span class="badge badge-teal">PyTorch</span>
+      <span class="badge badge-teal">Chart.js</span>
+      <span class="badge badge-teal">Vanilla JS</span>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">🏥 SymptTrack — Not a substitute for professional medical advice.</footer>
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+</body>
+</html>

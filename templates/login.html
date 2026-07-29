@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SymptTrack — Your Pocket Health Journal</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+<div id="toast-stack"></div>
+
+<div class="auth-wrap">
+  <!-- Visual side -->
+  <div class="auth-visual">
+    <div class="brand">
+      <span class="brand-badge" aria-hidden="true"></span>
+      SymptTrack
+    </div>
+
+    <div>
+      <h1>Your friendly pocket health journal 🏥</h1>
+      <p>Log daily symptoms, get instant AI-assisted insight, and watch your health trends over time — all in one calm, clinic-friendly place.</p>
+
+      <div class="pulse-wrap">
+        <svg class="pulse-line" viewBox="0 0 400 70" preserveAspectRatio="none">
+          <path class="pulse-path" d="M0,35 L60,35 L80,10 L100,60 L120,35 L150,35 L165,20 L180,50 L195,35 L400,35" />
+        </svg>
+      </div>
+
+      <p>🧑‍⚕️ Built for patients who want to understand their body better, one day at a time.</p>
+    </div>
+
+    <div class="auth-stats">
+      <div><strong>24/7</strong><span>Symptom Logging</span></div>
+      <div><strong>AI</strong><span>Diagnosis Assist</span></div>
+      <div><strong>📈</strong><span>Health Trends</span></div>
+    </div>
+  </div>
+
+  <!-- Form side -->
+  <div class="auth-form-side">
+    <div class="auth-form-box">
+      <div class="brand mb-24" style="display:none" id="mobile-brand">
+        <span class="brand-badge"></span> SymptTrack
+      </div>
+
+      <div class="auth-tabs">
+        <div class="auth-tab active" data-tab="login">Log In</div>
+        <div class="auth-tab" data-tab="signup">Sign Up</div>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="auth-panel active" data-panel="login">
+        <h2>Welcome back 👋</h2>
+        <p class="mb-24">Log in to continue your health journal.</p>
+        <div class="auth-error" id="login-error"></div>
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="login-email">Email address</label>
+            <div class="input-icon"><span>📧</span><input type="email" id="login-email" required placeholder="you@example.com"></div>
+          </div>
+          <div class="field">
+            <label for="login-password">Password</label>
+            <div class="input-icon"><span>🔒</span><input type="password" id="login-password" required placeholder="Enter your password"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg mt-8">Log In &nbsp;🔐</button>
+        </form>
+        <p class="demo-note">Are you an administrator? <a href="/admin">Go to Admin Panel →</a></p>
+      </div>
+
+      <!-- SIGN UP -->
+      <div class="auth-panel" data-panel="signup">
+        <h2>Create your account 🎉</h2>
+        <p class="mb-24">Start tracking your health in under a minute.</p>
+        <div class="auth-error" id="signup-error"></div>
+        <form id="signup-form" novalidate>
+          <div class="field">
+            <label for="signup-name">Full name</label>
+            <div class="input-icon"><span>🙂</span><input type="text" id="signup-name" required placeholder="Jordan Lee"></div>
+          </div>
+          <div class="field">
+            <label for="signup-email">Email address</label>
+            <div class="input-icon"><span>📧</span><input type="email" id="signup-email" required placeholder="you@example.com"></div>
+          </div>
+          <div class="field">
+            <label for="signup-password">Password</label>
+            <div class="input-icon"><span>🔒</span><input type="password" id="signup-password" required placeholder="At least 6 characters"></div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="signup-dob">Date of birth</label>
+              <input type="date" id="signup-dob">
+            </div>
+            <div class="field">
+              <label for="signup-gender">Gender</label>
+              <select id="signup-gender">
+                <option value="prefer_not_to_say">Prefer not to say</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="signup-phone">Phone (optional)</label>
+            <div class="input-icon"><span>📱</span><input type="tel" id="signup-phone" placeholder="+91 98765 43210"></div>
+          </div>
+          <button type="submit" class="btn btn-coral btn-block btn-lg mt-8">Create My Account &nbsp;🎉</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

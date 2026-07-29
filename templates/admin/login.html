@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Login — SymptTrack</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+<div id="toast-stack"></div>
+
+<div class="auth-wrap">
+  <div class="auth-visual" style="background: radial-gradient(circle at 20% 20%, var(--navy), #061323 75%);">
+    <div class="brand"><span class="brand-badge"></span>SymptTrack</div>
+    <div>
+      <h1>Admin Control Room 🖥️</h1>
+      <p>Manage patients, monitor daily activity, curate health tips, and keep the clinic running smoothly.</p>
+      <div class="pulse-wrap">
+        <svg class="pulse-line" viewBox="0 0 400 70" preserveAspectRatio="none">
+          <path class="pulse-path" d="M0,35 L60,35 L80,10 L100,60 L120,35 L150,35 L165,20 L180,50 L195,35 L400,35" />
+        </svg>
+      </div>
+      <p>🔐 Restricted access — administrator credentials required.</p>
+    </div>
+    <div class="auth-stats">
+      <div><strong>👥</strong><span>Patient Oversight</span></div>
+      <div><strong>📋</strong><span>Daily Logs</span></div>
+      <div><strong>⚙️</strong><span>Site Settings</span></div>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-form-box">
+      <h2>Admin Sign In 🧑‍💼</h2>
+      <p class="mb-24">Enter your administrator credentials to continue.</p>
+      <div class="auth-error" id="admin-login-error"></div>
+      <form id="admin-login-form" novalidate>
+        <div class="field">
+          <label for="admin-username">Username</label>
+          <div class="input-icon"><span>🧑‍💼</span><input type="text" id="admin-username" required placeholder="admin"></div>
+        </div>
+        <div class="field">
+          <label for="admin-password">Password</label>
+          <div class="input-icon"><span>🔒</span><input type="password" id="admin-password" required placeholder="Enter admin password"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg mt-8">Access Admin Panel &nbsp;🔐</button>
+      </form>
+      <p class="demo-note">Not an admin? <a href="/">Back to patient login →</a></p>
+      <p class="demo-note">Default credentials are set in <span class="text-mono">.env</span> (<span class="text-mono">DEFAULT_ADMIN_USERNAME</span> / <span class="text-mono">DEFAULT_ADMIN_PASSWORD</span>) and created via <span class="text-mono">python seed.py</span>.</p>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin-login.js') }}"></script>
+</body>
+</html>

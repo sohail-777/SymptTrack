@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Symptoms — SymptTrack</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+<div id="toast-stack"></div>
+{% include "_navbar.html" %}
+
+<main class="page-wrap">
+  <div class="container">
+    <div class="hero-banner">
+      <h1>🩺 Symptom Calendar</h1>
+      <p>Tap any date to log how you felt. Each entry is instantly analyzed by our clinical diagnosis-assist model.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="calendar-head">
+          <button class="calendar-nav-btn" id="prev-month" aria-label="Previous month">‹</button>
+          <h3 id="calendar-title">—</h3>
+          <button class="calendar-nav-btn" id="next-month" aria-label="Next month">›</button>
+        </div>
+        <div class="calendar-grid" id="calendar-day-labels">
+          <div class="calendar-dow">Sun</div><div class="calendar-dow">Mon</div><div class="calendar-dow">Tue</div>
+          <div class="calendar-dow">Wed</div><div class="calendar-dow">Thu</div><div class="calendar-dow">Fri</div><div class="calendar-dow">Sat</div>
+        </div>
+        <div class="calendar-grid mt-8" id="calendar-grid"></div>
+
+        <div class="legend">
+          <span><span class="dot" style="background:#7FD99A"></span>Mild</span>
+          <span><span class="dot" style="background:#B9E36B"></span>Light</span>
+          <span><span class="dot" style="background:var(--amber)"></span>Moderate</span>
+          <span><span class="dot" style="background:#FF9B54"></span>Serious</span>
+          <span><span class="dot" style="background:var(--coral)"></span>Severe</span>
+        </div>
+      </div>
+
+      <div class="flex-col gap-16">
+        <div class="card">
+          <div class="section-title mb-16"><span class="icon">✍️</span><h3>Quick Check-In</h3></div>
+          <p>Not feeling well right now? Log today's symptoms in one tap.</p>
+          <button class="btn btn-coral btn-block" id="log-today-btn">Log Today's Symptoms</button>
+        </div>
+        <div class="card">
+          <div class="section-title mb-16"><span class="icon">🧠</span><h3>How Diagnosis Works</h3></div>
+          <p style="font-size:13.5px;">Your symptom description is analyzed by the <strong>CORe Clinical Diagnosis Prediction</strong> model, with a built-in rule-based engine as backup — so you always get a helpful result.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">🏥 SymptTrack — Not a substitute for professional medical advice.</footer>
+
+<!-- Symptom entry modal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      <h3>🩺 Log Symptoms</h3>
+      <p id="modal-date-label" class="text-muted" style="font-size:13.5px;">—</p>
+    </div>
+
+    <form id="symptom-form">
+      <div class="field">
+        <label>Select common symptoms</label>
+        <div class="symptom-chip-grid" id="symptom-chip-grid"></div>
+      </div>
+
+      <div class="field">
+        <label for="symptom-text">Describe how you feel (in your own words)</label>
+        <textarea id="symptom-text" placeholder="e.g. I've had a mild fever since morning with a sore throat and body ache..."></textarea>
+        <p class="hint">The more detail you give, the better the diagnosis suggestion.</p>
+      </div>
+
+      <div class="field">
+        <label>Severity</label>
+        <div class="severity-slider-row">
+          <span class="severity-emoji" id="severity-emoji">😕</span>
+          <input type="range" min="1" max="5" value="3" id="severity-range">
+          <span class="badge badge-teal">Level <span id="severity-value">3</span>/5</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Mood today</label>
+        <div class="flex gap-12" style="flex-wrap:wrap;">
+          <label class="chip"><input type="radio" name="mood" value="good" style="margin-right:6px;">🙂 Good</label>
+          <label class="chip"><input type="radio" name="mood" value="okay" style="margin-right:6px;" checked>😐 Okay</label>
+          <label class="chip"><input type="radio" name="mood" value="low" style="margin-right:6px;">😔 Low</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="symptom-notes">Additional notes (optional)</label>
+        <textarea id="symptom-notes" placeholder="Medication taken, triggers, anything else worth remembering..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-symptom-btn">Save &amp; Get Diagnosis 🩺</button>
+    </form>
+
+    <div class="diagnosis-result" id="diagnosis-result" style="display:none;"></div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/symptoms.js') }}"></script>
+</body>
+</html>
