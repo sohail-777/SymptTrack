@@ -8,7 +8,6 @@ download monthly PDF reports — with a complete admin control panel behind it.
 · HuggingFace `CORe-clinical-diagnosis-prediction` transformer (ML), with a
 guaranteed rule-based fallback engine.
 
----
 
 ## ✨ Features
 
